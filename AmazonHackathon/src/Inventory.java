@@ -22,7 +22,7 @@ public class Inventory {
 		try {
 			String sCurrentLine;
 			String[] binContent;
-			br = new BufferedReader(new FileReader("C:\\Users\\likevin\\Desktop\\sampledata\\data5\\inventory.dat"));
+			br = new BufferedReader(new FileReader("inventory.dat"));
 
 			while ((sCurrentLine = br.readLine()) != null) {
 				binContent = sCurrentLine.split(" ");

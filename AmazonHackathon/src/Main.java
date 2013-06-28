@@ -5,6 +5,7 @@ import java.util.Map;
 public class Main {
 	Map<Long, Order> orderList = new HashMap<Long, Order>();
 	Map<Long, String> bindings = new HashMap<Long, String>();
+	Inventory inv = new Inventory();
 	static Kattio in;
 	
 	public static void main(String[] args) throws Exception {
