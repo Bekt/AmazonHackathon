@@ -1,3 +1,4 @@
+package com.amazon.aft.hackathon;
 
 public class Coordinate {
 	
