@@ -30,6 +30,7 @@ public class Inventory {
 				content.put(binContent[1], Integer.parseInt(binContent[2]));
 				bins.put(binContent[0], content);
 			}
+			System.out.println("Inventory size: " + bins.size());
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -55,6 +56,7 @@ public class Inventory {
 				content.put(binContent[1], Integer.parseInt(binContent[2]));
 				bins.put(binContent[0], content);
 			}
+			System.out.println("Inventory size: " + bins.size());
 		} catch (IOException e) {
 			System.out.println("Inventory file read error");
 		} catch (Exception e) {
