@@ -7,6 +7,11 @@ public class Parse {
 	static Map<Long, String> bindings = new HashMap<Long, String>();
 	static Map<Long, Order> orderList = new HashMap<Long, Order>();
 	static Map<String, Map<String, Integer>> bins = new HashMap<String, Map<String, Integer>>();
+	
+	static Map<Long, Order> ordersNE = new HashMap<Long, Order>();
+	static Map<Long, Order> ordersNW = new HashMap<Long, Order>();
+	static Map<Long, Order> ordersSE = new HashMap<Long, Order>();
+	static Map<Long, Order> ordersSW = new HashMap<Long, Order>();
 
 	static void readBinding() throws Exception {
 		in = new Kattio(new FileInputStream("bindings.dat"));
