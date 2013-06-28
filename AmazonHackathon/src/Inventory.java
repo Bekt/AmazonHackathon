@@ -8,15 +8,27 @@ public class Inventory {
 
 	private Hashtable<String, Hashtable<String, Integer>> bins = new Hashtable<String, Hashtable<String, Integer>>();
 
+	public static void main(String[] args) {
+		long start = System.currentTimeMillis();
+		Inventory inv = new Inventory();
+		start = System.currentTimeMillis() - start;
+		
+		System.out.println("inventory initialized in " + start + " milliseconds with " + inv.numBins() + " items");
+	}
+	
 	public Inventory() {
 		BufferedReader br = null;
 
 		try {
 			String sCurrentLine;
-			br = new BufferedReader(new FileReader("C:\\Users\\likevin\\Desktop\\sampledata\\data0\\inventory.dat"));
+			String[] binContent;
+			br = new BufferedReader(new FileReader("C:\\Users\\likevin\\Desktop\\sampledata\\data5\\inventory.dat"));
 
 			while ((sCurrentLine = br.readLine()) != null) {
-				System.out.println(sCurrentLine);
+				binContent = sCurrentLine.split(" ");
+				Hashtable<String, Integer> content = new Hashtable<String, Integer>();
+				content.put(binContent[1], Integer.parseInt(binContent[2]));
+				bins.put(binContent[0], content);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -59,5 +71,9 @@ public class Inventory {
 
 	public Hashtable<String, Integer> get(String binId) {
 		return bins.get(binId);
+	}
+	
+	public int numBins() {
+		return bins.size();
 	}
 }

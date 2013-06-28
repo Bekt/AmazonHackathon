@@ -111,7 +111,7 @@ public class TravelTimeCalculator {
     public static void main(String[] args) {
         try {
             String locationID1 = convertCoordinateToLocationID(2000,2000);
-            String locationID2 = convertCoordinateToLocationID(-2000, -2000);
+            String locationID2 = convertCoordinateToLocationID(-2000, 2000);
             long tt = computeTravelTime(locationID1, locationID2);
             System.out.println("TT from " + locationID1 + " to " + locationID2 + " is " + tt/60 + "  minutes");
         } catch (Exception e) {
