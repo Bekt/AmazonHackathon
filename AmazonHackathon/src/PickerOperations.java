@@ -29,7 +29,9 @@ public class PickerOperations {
 		long nextTravelTime = 0;
 		long smallestStartTime = Integer.MAX_VALUE;
 		long smallestOrderId = 0;
-		while(it.hasNext()) {
+		int orderCount = 0;
+		while(it.hasNext() && orderCount<1000) {
+			orderCount++;
 			Order currentOrder = orderList.get(it.next());
 			try {
 				if(currentOrder.dropTime < smallestStartTime) {
@@ -55,7 +57,7 @@ public class PickerOperations {
 					else {
 						//double priorityRatio = (double)travelTime/(double)timeLeft;
 						double priorityRatio = (1000/(double)timeLeft) 
-								- (Math.pow((double)travelTime, 2) / 5000000);
+								- (Math.pow((double)travelTime, 2) / 3000000);
 						if(priorityRatio > 0 && (p.time + travelTime <=36000)) {
 							// If same priority ratio choose the one with less travel time
 							if(priorityRatio == maxPriorityRatio) {
@@ -86,7 +88,7 @@ public class PickerOperations {
 			orderList.remove(currentOrder.orderId);
 			return true;
 		}
-		if(p.time == 0) {
+		if(p.time == 0 && smallestOrderId!=0) {
 			p.time = smallestStartTime;
 			Order currentOrder = orderList.get(smallestOrderId);
 			p.completedOrders.add(currentOrder.orderId);

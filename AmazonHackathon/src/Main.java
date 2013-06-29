@@ -20,10 +20,10 @@ public class Main {
 		
 		long start = System.currentTimeMillis();
 		long totalTime = 0;
-		while (Parse.ordersD.size() > 0) {
-			if (!ops.getNextOrder(p, Parse.ordersD)) {
+		while (Parse.ordersA.size() > 0) {
+			if (!ops.getNextOrder(p, Parse.ordersA)) {
 				p = new Picker("picker-" + (pickerList.size() + 1));
-				System.out.println("Added picker number of orders left in OrdersC: " + Parse.ordersD.size());
+				System.out.println("Added picker number of orders left in OrdersC: " + Parse.ordersA.size());
 				System.out.println("Completed in sec " + (System.currentTimeMillis() - start)/1000);
 				totalTime += (System.currentTimeMillis() - start)/1000;
 				System.out.println("Total time: "+totalTime);
@@ -31,18 +31,6 @@ public class Main {
 				pickerList.add(p);
 			}
 		}
-		
-		
-		/*while (Parse.ordersA.size() > 0) {
-			if (!ops.getNextOrder(p, Parse.ordersA)) {
-				p = new Picker("picker-" + (pickerList.size() + 1));
-				System.out.println("Added picker number of orders left in OrdersA: " + Parse.ordersA.size());
-				pickerList.add(p);
-			}
-		}
-		
-		System.out.println("Completed A with pickers "+ pickerList.size());
-		*/
 		
 		for(int i=0;i<pickerList.size();i++) {
 			p = pickerList.get(i);
@@ -87,14 +75,14 @@ public class Main {
 		for(int i=0;i<pickerList.size();i++) {
 			p = pickerList.get(i);
 			if(p.time < 30000) {
-				while(ops.getNextOrder(p, Parse.ordersA)) {
+				while(ops.getNextOrder(p, Parse.ordersD)) {
 				}
 			}
 		}
-		while (!Parse.ordersA.isEmpty()) {
-			if (!ops.getNextOrder(p, Parse.ordersA)) {
+		while (!Parse.ordersD.isEmpty()) {
+			if (!ops.getNextOrder(p, Parse.ordersD)) {
 				p = new Picker("picker-" + (pickerList.size() + 1));
-				System.out.println("Added picker number of orders left in OrdersD: " + Parse.ordersA.size());
+				System.out.println("Added picker number of orders left in OrdersD: " + Parse.ordersD.size());
 				System.out.println("Completed in sec " + (System.currentTimeMillis() - start)/1000);
 				totalTime += (System.currentTimeMillis() - start)/1000;
 				System.out.println("Total time: "+totalTime);
