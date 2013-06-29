@@ -9,5 +9,4 @@ public class Item {
 		this.itemId = itemId;
 		this.quantity = quantity;
 	}
-
 }

@@ -3,6 +3,7 @@ package level3;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -10,7 +11,7 @@ import java.util.Set;
 public class Parse {
 	static Kattio in;
 	
-	static Map<String, List<Item>> binToItems = new HashMap<String, List<Item>>();
+	static Map<String, HashMap<String, Integer>> binToItems = new HashMap<String, HashMap<String, Integer>>();
 	static Map<String, List<Order>> itemToOrders = new HashMap<String, List<Order>>();
 	
 	static Map<String, List<Order>> binToOrders = new HashMap<String, List<Order>>();
@@ -40,13 +41,13 @@ public class Parse {
 			String binId = in.getWord(),
 				   itemId = in.getWord();
 			int quantity = in.getInt();
-			
-			List<Item> items = binToItems.get(binId);			
-			if(items == null) {
-				items = new ArrayList<Item>();
-				binToItems.put(binId, items);
+					
+			HashMap<String, Integer> item;
+			if(binToItems.get(binId) == null) {
+				item = new HashMap<String, Integer>();
+				item.put(itemId, quantity);
+				binToItems.put(binId, item);
 			}
-			items.add(new Item(itemId, quantity));
 		}
 	}
 	
@@ -54,10 +55,13 @@ public class Parse {
 		Set<String> bins = binToItems.keySet();
 		
 		for (String binId : bins) {
-			List<Item> items = binToItems.get(binId);
-			for (Item item : items) {
-				if(item.quantity > 0) {
-					List<Order> orderItems = itemToOrders.get(item.itemId);
+			HashMap<String, Integer> items = (HashMap<String, Integer>) binToItems.get(binId);
+			Iterator<String> names = items.keySet().iterator();
+			while(names.hasNext()) {
+				String itemName = names.next();
+				//items.put(itemName, items.get(itemName) + 1);
+				if(items.get(itemName) > 0) {
+					List<Order> orderItems = itemToOrders.get(itemName);
 					List<Order> orderBins = binToOrders.get(binId);
 
 					if (orderBins == null) {
@@ -68,8 +72,7 @@ public class Parse {
 					for (Order orderItem : orderItems) {
 						orderBins.add(orderItem);
 					}
-					
-					item.quantity--;
+					//item.quantity--;
 				}
 			}
 		}
