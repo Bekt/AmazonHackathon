@@ -32,25 +32,26 @@ public class PickerOperations {
 		long smallestOrderId = 0;
 		int orderCount = 0;
 		
-		List<Long> orderIds = Parse.reverseBindings.get(p.location);
-		Parse.reverseBindings.remove(p.location);
-		if(orderIds!=null){
-			for(Long orderId: orderIds) {
-				if(allOrderIds.contains(orderId)){
-					p.completedOrders.add(orderId);
-					try {
-						long travelTime = TravelTimeCalculator.computeTravelTime(p.location, p.location);
-						p.time += travelTime;
-						allOrderIds.remove(orderId);
-						orderList.remove(orderId);
-						return true;
-					}catch (Exception e) {
-						System.out.println("Exception:: "+e.getMessage());
+		if(!p.location.equals("P-1-A-0000000000")) {
+			List<Long> orderIds = Parse.reverseBindings.get(p.location);
+			Parse.reverseBindings.remove(p.location);
+			if(orderIds!=null){
+				for(Long orderId: orderIds) {
+					if(allOrderIds.contains(orderId)){
+						p.completedOrders.add(orderId);
+						try {
+							long travelTime = TravelTimeCalculator.computeTravelTime(p.location, p.location);
+							p.time += travelTime;
+							allOrderIds.remove(orderId);
+							orderList.remove(orderId);
+							return true;
+						}catch (Exception e) {
+							System.out.println("Exception:: "+e.getMessage());
+						}
 					}
 				}
 			}
 		}
-		
 		Iterator<Long> it = orderList.keySet().iterator();
 		while(it.hasNext() && orderCount<1000) {
 			orderCount++;
