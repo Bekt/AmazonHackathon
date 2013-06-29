@@ -56,8 +56,7 @@ public class PickerOperations {
 									nextTravelTime = travelTime;
 									maxPriorityRatio = priorityRatio;
 								}
-							}
-							else if(priorityRatio > maxPriorityRatio) {
+							} else if(priorityRatio > maxPriorityRatio) {
 								nextOrderId = currentOrder.orderId;
 								nextTravelTime = travelTime;
 								maxPriorityRatio = priorityRatio;
