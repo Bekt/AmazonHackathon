@@ -1,10 +1,10 @@
 
 public class Main {
 	public static void main(String[] args) throws Exception {
-//		Parse.readInventory();
-//		Parse.readBinding();
-//		Parse.readOrders();
-//
+		Parse.readInventory("inventory.dat");
+		Parse.readBinding("bindings.dat");
+		Parse.readOrders("demands.dat");
+
 		PickerOperations ops = new PickerOperations();
 		Picker p = new Picker("picker-1");
 		int count = 1;
