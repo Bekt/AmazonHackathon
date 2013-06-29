@@ -1,4 +1,5 @@
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 
@@ -22,13 +23,28 @@ public class PickerOperations {
 	 * false - if no order found
 	 */
 	static boolean getNextOrder(Picker p, Map<Long, Order> orderList) {
-		Iterator<Long> it = orderList.keySet().iterator();
 		long nextOrderId = 0;
 		double maxPriorityRatio = 0;
 		long nextTravelTime = 0;
 		long smallestStartTime = Integer.MAX_VALUE;
 		long smallestOrderId = 0;
 		int orderCount = 0;
+		
+		List<Long> orderIds = Parse.reverseBindings.get(p.location);
+		if(orderIds!=null){
+			for(Long orderId: orderIds) {
+				p.completedOrders.add(orderId);
+				try {
+					long travelTime = TravelTimeCalculator.computeTravelTime(p.location, p.location);
+					p.time += travelTime;
+					orderList.remove(orderId);
+				}catch (Exception e) {
+					System.out.println("Exception:: "+e.getMessage());
+				}
+			}
+		}
+		
+		Iterator<Long> it = orderList.keySet().iterator();
 		while(it.hasNext() && orderCount<1000) {
 			orderCount++;
 			Order currentOrder = orderList.get(it.next());
