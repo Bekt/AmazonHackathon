@@ -4,9 +4,9 @@ import java.util.List;
 
 public class Main {
 	public static void main(String[] args) throws Exception {
-		Parse.readInventory();
-		Parse.readBinding();
-		Parse.readOrders();
+		Parse.readInventory("inventory.dat");
+		Parse.readBinding("bindings.dat");
+		Parse.readOrders("demands.dat");
 
 		List<Picker> pickerList = new ArrayList<Picker>();
 		PickerOperations ops = new PickerOperations();
