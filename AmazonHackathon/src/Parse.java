@@ -55,11 +55,6 @@ public class Parse {
 			modOrder.put(orderId, order);
 		}
 		
-		System.out.println(ordersA.size());
-		System.out.println(ordersB.size());
-		System.out.println(ordersC.size());
-		System.out.println(ordersD.size());
-		
 	}
 	
 	static void readInventory() throws Exception {

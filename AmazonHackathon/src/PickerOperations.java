@@ -35,15 +35,8 @@ public class PickerOperations {
 				// Ignore the order if it is not ready yet
 				if(travelTime+p.time > currentOrder.dropTime) {
 					// If there is order at the same location pick it up at no cost
-					if(travelTime == 0) {
-						p.completedOrders.add(currentOrder.orderId);
-						p.location = currentOrder.binId;
-						p.time += travelTime;
-						orderList.remove(currentOrder.orderId);
-						return true;
-					}
 					// If there is an order which can be completed in deadline complete that
-					else if(timeLeft == 0) {
+					if(travelTime == 0 || timeLeft == 0) {
 						p.completedOrders.add(currentOrder.orderId);
 						p.location = currentOrder.binId;
 						p.time += travelTime;
