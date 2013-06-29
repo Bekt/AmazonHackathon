@@ -1,5 +1,9 @@
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.amazon.aft.hackathon.TravelTimeCalculator;
@@ -8,12 +12,9 @@ public class Parse {
 	static Kattio in;
 	static Map<Long, String> bindings = new HashMap<Long, String>();
 	static Map<String, Map<String, Integer>> bins = new HashMap<String, Map<String, Integer>>();
+	static Map<Long, Order> allOrders = new HashMap<Long, Order>();
+	static List<Map<Long, Order>> orders = new ArrayList<Map<Long, Order>>();
 	
-	static Map<Long, Order> ordersA = new HashMap<Long, Order>();
-	static Map<Long, Order> ordersB = new HashMap<Long, Order>();
-	static Map<Long, Order> ordersC = new HashMap<Long, Order>();
-	static Map<Long, Order> ordersD = new HashMap<Long, Order>();
-
 	static void readBinding(String filename) throws Exception {
 		in = new Kattio(new FileInputStream(filename));
 		
@@ -24,6 +25,11 @@ public class Parse {
 	
 	static void readOrders(String filename) throws Exception {
 		in = new Kattio(new FileInputStream(filename));
+		
+		orders.add(new HashMap<Long, Order>());
+		orders.add(new HashMap<Long, Order>());
+		orders.add(new HashMap<Long, Order>());
+		orders.add(new HashMap<Long, Order>());
 		
 		while(in.hasMoreTokens()) {
 			long orderId = in.getLong(),
@@ -39,22 +45,24 @@ public class Parse {
 			
 			switch (modLocation) {
 				case "A":
-					modOrder = ordersA;
+					modOrder = orders.get(0);
 					break;
 				case "B":
-					modOrder = ordersB;
+					modOrder = orders.get(1);
 					break;
 				case "C":
-					modOrder = ordersC;
+					modOrder = orders.get(2);
 					break;
 				default:
-					modOrder = ordersD;
+					modOrder = orders.get(3);
 					break;
 			}
 			
 			modOrder.put(orderId, order);
+			allOrders.put(orderId, order);
 		}
 		
+		Collections.sort(orders, new Comp());
 	}
 	
 	static void readInventory(String filename) throws Exception {
@@ -71,6 +79,17 @@ public class Parse {
 				bins.put(binId, items);
 			}
 			items.put(itemId, quantity);
+		}
+	}
+	
+	static class Comp implements Comparator<Map<Long, Order>> {
+
+		@Override
+		public int compare(Map<Long, Order> mapOne, Map<Long, Order> mapTwo) {
+			Integer sizeOne = mapOne.size();
+			Integer sizeTwo = mapTwo.size();
+			
+			return sizeOne.compareTo(sizeTwo);
 		}
 	}
 

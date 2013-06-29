@@ -22,7 +22,7 @@ public class PickerOperations {
 	 * @return true - if update successful 
 	 * false - if no order found
 	 */
-	boolean getNextOrder(Picker p, Map<Long, Order> orderList) {
+	static boolean getNextOrder(Picker p, Map<Long, Order> orderList) {
 		Iterator<Long> it = orderList.keySet().iterator();
 		long nextOrderId = 0;
 		double maxPriorityRatio = 0;
@@ -57,7 +57,7 @@ public class PickerOperations {
 					else {
 						//double priorityRatio = (double)travelTime/(double)timeLeft;
 						double priorityRatio = (1000/(double)timeLeft) 
-								- (Math.pow((double)travelTime, 2) / 3000000);
+								- (Math.pow((double)travelTime, 2) / 2500000);
 						if(priorityRatio > 0 && (p.time + travelTime <=36000)) {
 							// If same priority ratio choose the one with less travel time
 							if(priorityRatio == maxPriorityRatio) {
