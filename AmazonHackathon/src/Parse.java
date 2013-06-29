@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ public class Parse {
 	static Map<String, Map<String, Integer>> bins = new HashMap<String, Map<String, Integer>>();
 	static Map<Long, Order> allOrders = new HashMap<Long, Order>();
 	static List<Map<Long, Order>> orders = new ArrayList<Map<Long, Order>>();
+	static Map<String, List<Long>> reverseBindings = new HashMap<String, List<Long>>();
 	
 	static void readBinding(String filename) throws Exception {
 		in = new Kattio(new FileInputStream(filename));
@@ -19,8 +21,26 @@ public class Parse {
 		while(in.hasMoreTokens()) {
 			bindings.put(in.getLong(), in.getWord());
 		}
+		fillReverseBindings();
 	}
 	
+	private static void fillReverseBindings() {
+		Iterator<Long> orderIds = bindings.keySet().iterator();
+		while(orderIds.hasNext()) {
+			Long orderId = orderIds.next();
+			String binId = bindings.get(orderId);
+			List<Long> orderList;
+			
+			if(reverseBindings.containsKey(binId))
+				orderList = reverseBindings.get(binId);
+			else
+				orderList = new ArrayList<Long>();
+			
+			orderList.add(orderId);
+			reverseBindings.put(binId, orderList);
+		}
+	}
+
 	static void readOrders(String filename) throws Exception {
 		in = new Kattio(new FileInputStream(filename));
 		
