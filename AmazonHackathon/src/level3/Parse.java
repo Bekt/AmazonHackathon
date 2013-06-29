@@ -13,8 +13,10 @@ public class Parse {
 	
 	static Map<String, HashMap<String, Integer>> binToItems = new HashMap<String, HashMap<String, Integer>>();
 	static Map<String, List<Order>> itemToOrders = new HashMap<String, List<Order>>();
-	
+	static Map<Long, Order> allOrders = new HashMap<Long, Order>();
+	static Map<Long, Order> orderList = new HashMap<Long, Order>();
 	static Map<String, List<Order>> binToOrders = new HashMap<String, List<Order>>();
+	static Map<String, List<String>> itemToBins = new HashMap<String, List<String>>();
 	
 	static void readOrders(String filename) throws Exception {
 		in = new Kattio(new FileInputStream(filename));
@@ -30,13 +32,16 @@ public class Parse {
 				orders = new ArrayList<Order>();
 				itemToOrders.put(itemId, orders);
 			}
-			orders.add(new Order(orderId, dueTime, dropTime, itemId));
+			Order orderInstance = new Order(orderId, dueTime, dropTime, itemId);
+			orders.add(orderInstance);
+			allOrders.put(orderId, orderInstance);
+			orderList.put(orderId, orderInstance);
 		}
 	}
 	
 	static void readInventory(String filename) throws Exception {
 		in = new Kattio(new FileInputStream(filename));
-		
+		itemToBins = new HashMap<String, List<String>>();
 		while(in.hasMoreTokens()) {
 			String binId = in.getWord(),
 				   itemId = in.getWord();
@@ -47,6 +52,18 @@ public class Parse {
 				item = new HashMap<String, Integer>();
 				item.put(itemId, quantity);
 				binToItems.put(binId, item);
+			}
+			
+			ArrayList<String> tempBinList;
+			if(itemToBins.containsKey(itemId)) {
+				tempBinList = (ArrayList<String>) itemToBins.get(itemId);
+				tempBinList.add(binId);
+				itemToBins.put(itemId, tempBinList);
+			}
+			else {
+				tempBinList = new ArrayList<String>();
+				tempBinList.add(binId);
+				itemToBins.put(itemId, tempBinList);
 			}
 		}
 	}

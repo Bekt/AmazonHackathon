@@ -5,8 +5,8 @@ public class Main {
 		
 		Parse.readInventory("inventory.dat");
 		Parse.readOrders("demands.dat");
-		Parse.intersectMaps();
-		
+		//Parse.intersectMaps();
+		Solve.run();
 		Parse.in.close();
 
 	}
