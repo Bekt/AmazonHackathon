@@ -7,7 +7,7 @@ public class Solve {
 	static List<Picker> pickers = new ArrayList<Picker>();
 	static Picker p = new Picker("picker-1");
 	
-	public static void run() {
+	public static void run() throws Exception{
 		pickers.add(p);
 		
 		PickerOperations.fillOrderIds();
@@ -32,7 +32,7 @@ public class Solve {
 		}
 	}
 	
-	static void processOrders(Map<Long, Order> orders) {
+	static void processOrders(Map<Long, Order> orders) throws Exception {
 		while (!orders.isEmpty()) {
 			if (!PickerOperations.getNextOrder(p, orders)) {
 				p = new Picker("picker-" + (pickers.size() + 1));
@@ -41,7 +41,7 @@ public class Solve {
 		}
 	}
 	
-	static void processAgain(Map<Long, Order> orders) {
+	static void processAgain(Map<Long, Order> orders) throws Exception{
 		int size = pickers.size();
 		for (int i = 0; i < size; i++) {
 			p = pickers.get(i);

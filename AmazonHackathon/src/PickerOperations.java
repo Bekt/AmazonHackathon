@@ -23,8 +23,9 @@ public class PickerOperations {
 	 *  
 	 * @return true - if update successful 
 	 * false - if no order found
+	 * @throws Exception 
 	 */
-	static boolean getNextOrder(Picker p, Map<Long, Order> orderList) {
+	static boolean getNextOrder(Picker p, Map<Long, Order> orderList) throws Exception {
 		long nextOrderId = 0;
 		double maxPriorityRatio = 0;
 		long nextTravelTime = 0;
@@ -41,10 +42,13 @@ public class PickerOperations {
 						p.completedOrders.add(orderId);
 						try {
 							long travelTime = TravelTimeCalculator.computeTravelTime(p.location, p.location);
-							p.time += travelTime;
-							allOrderIds.remove(orderId);
-							orderList.remove(orderId);
-							return true;
+							long travelBackTime = TravelTimeCalculator.computeTravelTime(p.location, "P-1-A-0000000000");
+							if((p.time + travelTime + travelBackTime) <= 35000) {
+								p.time += travelTime;
+								allOrderIds.remove(orderId);
+								orderList.remove(orderId);
+								return true;
+							}
 						}catch (Exception e) {
 							System.out.println("Exception:: "+e.getMessage());
 						}
@@ -62,13 +66,14 @@ public class PickerOperations {
 					smallestOrderId = currentOrder.orderId;
 				}
 				long travelTime = TravelTimeCalculator.computeTravelTime(p.location, currentOrder.binId);
+				long travelBack = TravelTimeCalculator.computeTravelTime("P-1-A-0000000000", currentOrder.binId);
 				long timeLeft = currentOrder.dueTime - p.time - travelTime;
 				// Ignore the order if it is not ready yet
 				if(travelTime+p.time > currentOrder.dropTime) {
 					// If there is order at the same location pick it up at no cost
 					// If there is an order which can be completed in deadline complete that
 					if(travelTime == 0 || timeLeft == 0) {
-						if((p.time + travelTime) <= 36000) {
+						if((p.time + travelTime + travelBack) <= 36000) {
 							p.completedOrders.add(currentOrder.orderId);
 							p.location = currentOrder.binId;
 							p.time += travelTime;
@@ -106,12 +111,16 @@ public class PickerOperations {
 
 		if(nextOrderId!= 0) {
 			Order currentOrder = orderList.get(nextOrderId);
-			p.completedOrders.add(currentOrder.orderId);
-			p.location = currentOrder.binId;
-			p.time += nextTravelTime;
-			allOrderIds.remove(currentOrder.orderId);
-			orderList.remove(currentOrder.orderId);
-			return true;
+			long travelBack = TravelTimeCalculator.computeTravelTime("P-1-A-0000000000", currentOrder.binId);
+			if((p.time + nextTravelTime + travelBack) <= 36000) {
+				
+				p.completedOrders.add(currentOrder.orderId);
+				p.location = currentOrder.binId;
+				p.time += nextTravelTime;
+				allOrderIds.remove(currentOrder.orderId);
+				orderList.remove(currentOrder.orderId);
+				return true;
+			}
 		}
 		if(p.time == 0 && smallestOrderId!=0) {
 			p.time = smallestStartTime;
