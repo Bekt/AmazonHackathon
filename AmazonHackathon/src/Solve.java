@@ -44,7 +44,7 @@ public class Solve {
 		int size = pickers.size();
 		for (int i = 0; i < size; i++) {
 			p = pickers.get(i);
-			if (p.time < 30000) {
+			if (p.time < 34000) {
 				while (PickerOperations.getNextOrder(p, orders));
 			}
 		}

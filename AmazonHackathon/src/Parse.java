@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.amazon.aft.hackathon.TravelTimeCalculator;
-
 public class Parse {
 	static Kattio in;
 	static Map<Long, String> bindings = new HashMap<Long, String>();
@@ -43,19 +41,17 @@ public class Parse {
 			String modLocation = TravelTimeCalculator.getModForLocationID(binId);
 			Map<Long, Order> modOrder;
 			
-			switch (modLocation) {
-				case "A":
-					modOrder = orders.get(0);
-					break;
-				case "B":
-					modOrder = orders.get(1);
-					break;
-				case "C":
-					modOrder = orders.get(2);
-					break;
-				default:
-					modOrder = orders.get(3);
-					break;
+			if(modLocation.equals("A")) {
+				modOrder = orders.get(0);
+			}
+			else if(modLocation.equals("B")) {
+				modOrder = orders.get(1);
+			}
+			else if(modLocation.equals("C")) {
+				modOrder = orders.get(2);
+			}
+			else {
+				modOrder = orders.get(3);
 			}
 			
 			modOrder.put(orderId, order);
