@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Picker {
 	
 	private String id;
-	public ArrayList<String> completedOrders = new ArrayList<String>();
+	public ArrayList<Long> completedOrders = new ArrayList<Long>();
 	public String location;
 	public int time;
 	
