@@ -1,6 +1,8 @@
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 
@@ -11,7 +13,7 @@ import java.util.Map;
 public class PickerOperations {
 
 
-
+	static Set<Long> allOrderIds;
 	/**
 	 * @param p - Picker
 	 * @param orderList - orderList of a Quadrant
@@ -31,15 +33,20 @@ public class PickerOperations {
 		int orderCount = 0;
 		
 		List<Long> orderIds = Parse.reverseBindings.get(p.location);
+		Parse.reverseBindings.remove(p.location);
 		if(orderIds!=null){
 			for(Long orderId: orderIds) {
-				p.completedOrders.add(orderId);
-				try {
-					long travelTime = TravelTimeCalculator.computeTravelTime(p.location, p.location);
-					p.time += travelTime;
-					orderList.remove(orderId);
-				}catch (Exception e) {
-					System.out.println("Exception:: "+e.getMessage());
+				if(allOrderIds.contains(orderId)){
+					p.completedOrders.add(orderId);
+					try {
+						long travelTime = TravelTimeCalculator.computeTravelTime(p.location, p.location);
+						p.time += travelTime;
+						allOrderIds.remove(orderId);
+						orderList.remove(orderId);
+						return true;
+					}catch (Exception e) {
+						System.out.println("Exception:: "+e.getMessage());
+					}
 				}
 			}
 		}
@@ -64,15 +71,16 @@ public class PickerOperations {
 							p.completedOrders.add(currentOrder.orderId);
 							p.location = currentOrder.binId;
 							p.time += travelTime;
+							allOrderIds.remove(currentOrder.orderId);
 							orderList.remove(currentOrder.orderId);
 							return true;
 						}
 					}
 					// Else pick the order with highPriorityRatio
 					else {
-						//double priorityRatio = (double)travelTime/(double)timeLeft;
-						double priorityRatio = (1000/(double)timeLeft) 
-								- (Math.pow((double)travelTime, 2) / 2500000);
+						double priorityRatio = (double)1000/(double)(timeLeft*Math.pow(travelTime, 2));
+						//double priorityRatio = (1000/(double)timeLeft) 
+						//		- (Math.pow((double)travelTime, 2) / 2500000);
 						if(priorityRatio > 0 && (p.time + travelTime <=36000)) {
 							// If same priority ratio choose the one with less travel time
 							if(priorityRatio == maxPriorityRatio) {
@@ -100,6 +108,7 @@ public class PickerOperations {
 			p.completedOrders.add(currentOrder.orderId);
 			p.location = currentOrder.binId;
 			p.time += nextTravelTime;
+			allOrderIds.remove(currentOrder.orderId);
 			orderList.remove(currentOrder.orderId);
 			return true;
 		}
@@ -108,10 +117,19 @@ public class PickerOperations {
 			Order currentOrder = orderList.get(smallestOrderId);
 			p.completedOrders.add(currentOrder.orderId);
 			p.location = currentOrder.binId;
+			allOrderIds.remove(currentOrder.orderId);
 			orderList.remove(currentOrder.orderId);
 			return true;
 		}
 		return false;
+	}
+	public static void fillOrderIds() {
+		allOrderIds = new HashSet<Long>();
+		Iterator<Long> orderIds = Parse.allOrders.keySet().iterator();
+		while(orderIds.hasNext()){
+			Long orderId = orderIds.next();
+			allOrderIds.add(orderId);
+		}
 	}
 
 }

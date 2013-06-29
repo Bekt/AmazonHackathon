@@ -10,6 +10,8 @@ public class Solve {
 	public static void run() {
 		pickers.add(p);
 		
+		PickerOperations.fillOrderIds();
+		
 		processOrders(Parse.orders.get(0));		
 		processAgain(Parse.orders.get(1));
 
@@ -20,7 +22,6 @@ public class Solve {
 		processAgain(Parse.orders.get(3));
 		
 		processOrders(Parse.orders.get(3));		
-		
 		for (Picker picker : pickers) {
 			for (Long orderId : picker.completedOrders) {
 				Order order = Parse.allOrders.get(orderId);
@@ -37,7 +38,7 @@ public class Solve {
 				p = new Picker("picker-" + (pickers.size() + 1));
 				pickers.add(p);
 			}
-		}		
+		}
 	}
 	
 	static void processAgain(Map<Long, Order> orders) {
