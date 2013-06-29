@@ -14,16 +14,16 @@ public class Parse {
 	static Map<Long, Order> ordersC = new HashMap<Long, Order>();
 	static Map<Long, Order> ordersD = new HashMap<Long, Order>();
 
-	static void readBinding() throws Exception {
-		in = new Kattio(new FileInputStream("bindings.dat"));
+	static void readBinding(String filename) throws Exception {
+		in = new Kattio(new FileInputStream(filename));
 		
 		while(in.hasMoreTokens()) {
 			bindings.put(in.getLong(), in.getWord());
 		}
 	}
 	
-	static void readOrders() throws Exception {
-		in = new Kattio(new FileInputStream("demands.dat"));
+	static void readOrders(String filename) throws Exception {
+		in = new Kattio(new FileInputStream(filename));
 		
 		while(in.hasMoreTokens()) {
 			long orderId = in.getLong(),
@@ -57,8 +57,8 @@ public class Parse {
 		
 	}
 	
-	static void readInventory() throws Exception {
-		in = new Kattio(new FileInputStream("inventory.dat"));
+	static void readInventory(String filename) throws Exception {
+		in = new Kattio(new FileInputStream(filename));
 		
 		while(in.hasMoreTokens()) {
 			String binId = in.getWord(),
