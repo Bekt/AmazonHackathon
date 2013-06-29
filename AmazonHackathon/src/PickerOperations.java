@@ -37,16 +37,18 @@ public class PickerOperations {
 					// If there is order at the same location pick it up at no cost
 					// If there is an order which can be completed in deadline complete that
 					if(travelTime == 0 || timeLeft == 0) {
-						p.completedOrders.add(currentOrder.orderId);
-						p.location = currentOrder.binId;
-						p.time += travelTime;
-						orderList.remove(currentOrder.orderId);
-						return true;
+						if((p.time + travelTime) <= 36000) {
+							p.completedOrders.add(currentOrder.orderId);
+							p.location = currentOrder.binId;
+							p.time += travelTime;
+							orderList.remove(currentOrder.orderId);
+							return true;
+						}
 					}
 					// Else pick the order with highPriorityRatio
 					else {
 						double priorityRatio = (double)travelTime/(double)timeLeft;
-						if(priorityRatio > 0) {
+						if(priorityRatio > 0 && (p.time + travelTime <=36000)) {
 							// If same priority ratio choose the one with less travel time
 							if(priorityRatio == maxPriorityRatio) {
 								if(travelTime < nextTravelTime) {
@@ -54,8 +56,7 @@ public class PickerOperations {
 									nextTravelTime = travelTime;
 									maxPriorityRatio = priorityRatio;
 								}
-							}
-							else if(priorityRatio > maxPriorityRatio) {
+							} else if(priorityRatio > maxPriorityRatio) {
 								nextOrderId = currentOrder.orderId;
 								nextTravelTime = travelTime;
 								maxPriorityRatio = priorityRatio;
