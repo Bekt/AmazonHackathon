@@ -2,16 +2,17 @@ import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.amazon.aft.hackathon.TravelTimeCalculator;
+
 public class Parse {
 	static Kattio in;
 	static Map<Long, String> bindings = new HashMap<Long, String>();
-	static Map<Long, Order> orderList = new HashMap<Long, Order>();
 	static Map<String, Map<String, Integer>> bins = new HashMap<String, Map<String, Integer>>();
 	
-	static Map<Long, Order> ordersNE = new HashMap<Long, Order>();
-	static Map<Long, Order> ordersNW = new HashMap<Long, Order>();
-	static Map<Long, Order> ordersSE = new HashMap<Long, Order>();
-	static Map<Long, Order> ordersSW = new HashMap<Long, Order>();
+	static Map<Long, Order> ordersA = new HashMap<Long, Order>();
+	static Map<Long, Order> ordersB = new HashMap<Long, Order>();
+	static Map<Long, Order> ordersC = new HashMap<Long, Order>();
+	static Map<Long, Order> ordersD = new HashMap<Long, Order>();
 
 	static void readBinding() throws Exception {
 		in = new Kattio(new FileInputStream("bindings.dat"));
@@ -30,10 +31,35 @@ public class Parse {
 				 dropTime = in.getLong();
 			String itemId = in.getWord();
 			String binId = bindings.get(orderId);
-			
+
 			Order order = new Order(orderId, dueTime, dropTime, itemId, binId);
-			orderList.put(orderId, order);
+
+			String modLocation = TravelTimeCalculator.getModForLocationID(binId);
+			Map<Long, Order> modOrder;
+			
+			switch (modLocation) {
+				case "A":
+					modOrder = ordersA;
+					break;
+				case "B":
+					modOrder = ordersB;
+					break;
+				case "C":
+					modOrder = ordersC;
+					break;
+				default:
+					modOrder = ordersD;
+					break;
+			}
+			
+			modOrder.put(orderId, order);
 		}
+		
+		System.out.println(ordersA.size());
+		System.out.println(ordersB.size());
+		System.out.println(ordersC.size());
+		System.out.println(ordersD.size());
+		
 	}
 	
 	static void readInventory() throws Exception {

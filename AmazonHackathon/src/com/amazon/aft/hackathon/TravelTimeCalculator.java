@@ -54,7 +54,7 @@ public class TravelTimeCalculator {
         return c;
     }
     
-    private static String getModForLocationID(String locationID) {
+    public static String getModForLocationID(String locationID) {
         return locationID.substring(LOCATION_ID_PREFIX.length(), LOCATION_ID_PREFIX.length() + 1);
     }
     
